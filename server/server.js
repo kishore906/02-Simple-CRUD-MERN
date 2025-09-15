@@ -18,7 +18,7 @@ mongoose
   .then(() => console.log("Database Connected Successfully"))
   .catch(() => console.log("Error in Connecting Database"));
 
-app.get("/", async (req, res) => {
+app.get("/api", async (req, res) => {
   try {
     const users = await User.find({}, { password: 0 });
     res.status(200).json(users);
@@ -27,7 +27,7 @@ app.get("/", async (req, res) => {
   }
 });
 
-app.get("/getUsers/:id", async (req, res) => {
+app.get("/api/getUsers/:id", async (req, res) => {
   try {
     const { id } = req.params; // const id = req.params.id;
     const user = await User.findById(id); // findById({_id: id})
@@ -42,18 +42,23 @@ app.get("/getUsers/:id", async (req, res) => {
   }
 });
 
-app.post("/createUser", async (req, res) => {
+app.post("/api/createUser", async (req, res) => {
   try {
     const { name, email, password, age } = req.body;
     const hashed = await bcrypt.hash(password, 10);
     const user = await User.create({ name, email, password: hashed, age });
-    res.status(200).json(user);
+    res.status(200).json({
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      age: user.age,
+    });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 });
 
-app.put("/updateUser/:id", async (req, res) => {
+app.put("/api/updateUser/:id", async (req, res) => {
   try {
     const { id } = req.params;
     const { password, ...rest } = req.body;
@@ -77,7 +82,7 @@ app.put("/updateUser/:id", async (req, res) => {
   }
 });
 
-app.delete("/deleteUser/:id", async (req, res) => {
+app.delete("/api/deleteUser/:id", async (req, res) => {
   try {
     const { id } = req.params;
 

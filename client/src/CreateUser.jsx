@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 function CreateUser() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [age, setAge] = useState("");
 
   const navigate = useNavigate();
@@ -13,11 +14,12 @@ function CreateUser() {
     e.preventDefault();
 
     axios
-      .post("http://localhost:3000/createUser", { name, email, age })
+      .post("/api/createUser", { name, email, password, age })
       .then((response) => {
         console.log(response);
         setName("");
         setEmail("");
+        setPassword("");
         setAge("");
         navigate("/");
       })
@@ -54,6 +56,20 @@ function CreateUser() {
               placeholder="Enter EmailId.."
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+            />
+          </div>
+
+          <div className="mb-2">
+            <label htmlFor="password">
+              <b>Password</b>
+            </label>
+            <input
+              type="password"
+              id="password"
+              className="form-control"
+              placeholder="Enter Password.."
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
             />
           </div>
 

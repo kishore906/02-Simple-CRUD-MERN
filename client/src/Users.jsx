@@ -7,14 +7,14 @@ function Users() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:3000")
+      .get("/api")
       .then((response) => setUsers(response.data))
       .catch((err) => console.log(err));
   }, []);
 
   function handleDelete(id) {
     axios
-      .delete(`http://localhost:3000/deleteUser/${id}`)
+      .delete(`/api/deleteUser/${id}`)
       .then((res) => {
         console.log(res);
         window.location.reload();
